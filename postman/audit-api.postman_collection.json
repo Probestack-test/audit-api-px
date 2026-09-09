@@ -1,0 +1,251 @@
+{
+  "info" : {
+    "name" : "audit-api Postman Collection",
+    "description" : "Immutable event logging service for security, compliance, and forensics.\nCaptures every critical action performed across all microservices (Enhancement, \nAssessment, Auth, Secrets, etc.) in a tamper-proof, searchable format.\nSupports SOC2 and ISO27001 audit requirements.\n\n\nOpenAPI version: 1.0.0",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth" : {
+    "type" : "bearer",
+    "bearer" : [ {
+      "key" : "token",
+      "value" : "{{accessToken}}",
+      "type" : "string"
+    } ]
+  },
+  "variable" : [ {
+    "key" : "baseUrl",
+    "value" : "https://audit.forgesphere.lightning.com/v8",
+    "type" : "string",
+    "description" : "Override with the base URL of the deployed Apigee proxy."
+  }, {
+    "key" : "accessToken",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "actor",
+    "value" : "",
+    "type" : "string",
+    "description" : "Filter by the exact actor name (e.g., 'admin' or 'service.WORKSPACE')."
+  }, {
+    "key" : "action",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "resourceType",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "resourceId",
+    "value" : "",
+    "type" : "string",
+    "description" : "Filter by a specific resource UUID."
+  }, {
+    "key" : "outcome",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "startDate",
+    "value" : "",
+    "type" : "string",
+    "description" : "ISO-8601 timestamp (e.g., 2026-09-01T00:00:00Z)."
+  }, {
+    "key" : "endDate",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "page",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "size",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "eventId",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "exportJobId",
+    "value" : "",
+    "type" : "string"
+  } ],
+  "item" : [ {
+    "name" : "Ingest a new audit event (Internal Service Call)",
+    "request" : {
+      "method" : "POST",
+      "description" : "Ingest a new audit event (Internal Service Call)\n\nResponses:\n- 201: Event successfully persisted to the immutable audit log.\n- 400: Invalid query parameters or missing required fields.\n- 500: Storage engine failure or search cluster unavailability.",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "type" : "text"
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      },
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/events",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "events" ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Search audit events with filters",
+    "request" : {
+      "method" : "GET",
+      "description" : "Search audit events with filters\n\nResponses:\n- 200: Matching audit events.\n- 400: Invalid query parameters or missing required fields.\n- 500: Storage engine failure or search cluster unavailability.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/events/search?actor={{actor}}&action={{action}}&resourceType={{resourceType}}&resourceId={{resourceId}}&outcome={{outcome}}&startDate={{startDate}}&endDate={{endDate}}&page={{page}}&size={{size}}",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "events", "search" ],
+        "query" : [ {
+          "key" : "actor",
+          "value" : "{{actor}}",
+          "disabled" : true,
+          "description" : "Filter by the exact actor name (e.g., 'admin' or 'service.WORKSPACE')."
+        }, {
+          "key" : "action",
+          "value" : "{{action}}",
+          "disabled" : true
+        }, {
+          "key" : "resourceType",
+          "value" : "{{resourceType}}",
+          "disabled" : true
+        }, {
+          "key" : "resourceId",
+          "value" : "{{resourceId}}",
+          "disabled" : true,
+          "description" : "Filter by a specific resource UUID."
+        }, {
+          "key" : "outcome",
+          "value" : "{{outcome}}",
+          "disabled" : true
+        }, {
+          "key" : "startDate",
+          "value" : "{{startDate}}",
+          "disabled" : true,
+          "description" : "ISO-8601 timestamp (e.g., 2026-09-01T00:00:00Z)."
+        }, {
+          "key" : "endDate",
+          "value" : "{{endDate}}",
+          "disabled" : true
+        }, {
+          "key" : "page",
+          "value" : "{{page}}",
+          "disabled" : true
+        }, {
+          "key" : "size",
+          "value" : "{{size}}",
+          "disabled" : true
+        } ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Get a specific audit event by ID",
+    "request" : {
+      "method" : "GET",
+      "description" : "Get a specific audit event by ID\n\nResponses:\n- 200: Audit event detail.\n- 404: Event or export job ID does not exist.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/events/:eventId",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "events", ":eventId" ],
+        "variable" : [ {
+          "key" : "eventId",
+          "value" : "{{eventId}}"
+        } ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Export audit logs for compliance",
+    "request" : {
+      "method" : "POST",
+      "description" : "Export audit logs for compliance\n\nResponses:\n- 202: Export job queued.\n- 400: Invalid query parameters or missing required fields.\n- 500: Storage engine failure or search cluster unavailability.",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "type" : "text"
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      },
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/export",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "export" ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Download the exported audit file",
+    "request" : {
+      "method" : "GET",
+      "description" : "Download the exported audit file\n\nResponses:\n- 200: Export status and download URL.\n- 404: Event or export job ID does not exist.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/export/:exportJobId",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "export", ":exportJobId" ],
+        "variable" : [ {
+          "key" : "exportJobId",
+          "value" : "{{exportJobId}}"
+        } ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Get current audit log retention policy",
+    "request" : {
+      "method" : "GET",
+      "description" : "Get current audit log retention policy\n\nResponses:\n- 200: Retention configuration.\n- 500: Storage engine failure or search cluster unavailability.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/retention",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "retention" ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Update audit log retention policy (Admin Only)",
+    "request" : {
+      "method" : "PUT",
+      "description" : "Update audit log retention policy (Admin Only)\n\nResponses:\n- 200: Retention policy updated.\n- 400: Invalid query parameters or missing required fields.\n- 500: Storage engine failure or search cluster unavailability.",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "type" : "text"
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      },
+      "url" : {
+        "raw" : "{{baseUrl}}/audit/retention",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "audit", "retention" ]
+      }
+    },
+    "response" : [ ]
+  } ]
+}
