@@ -21,8 +21,3 @@ jobs:
       deploy_proxy: audit-api
       resourcetype: apis
       branch_name: ${{ github.ref_name }}
-      cicd_config_id: 6a5c4e4f19924f68338400de
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      APP_ID: ${{ secrets.APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
