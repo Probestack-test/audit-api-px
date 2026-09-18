@@ -1,23 +1,34 @@
 name: Apigee Platform CI
 
 on:
-  workflow_dispatch:
-
   push:
     branches:
       - feature-adarsha
       - release
 
+  workflow_dispatch:
+
 jobs:
-  deploy:
+  apigee-ci:
     uses: ForgeCrux/pipeline-template/.github/workflows/apigee-v1.yaml@main
-    secrets: inherit
+
     permissions:
       contents: read
       id-token: write
+
+    secrets:
+      cicd_config_id: ${{ secrets.CICD_CONFIG_ID }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      PROB_SERVICE_TOKEN_URL: ${{ secrets.PROB_SERVICE_TOKEN_URL }}
+      PROB_SERVICE_TOKEN_CLIENT_ID: ${{ secrets.PROB_SERVICE_TOKEN_CLIENT_ID }}
+      PROB_SERVICE_TOKEN_CLIENT_SECRET: ${{ secrets.PROB_SERVICE_TOKEN_CLIENT_SECRET }}
+      PROB_SERVICE_TOKEN_TENANT_ID: ${{ secrets.PROB_SERVICE_TOKEN_TENANT_ID }}
+
     with:
       apigee_org: gen-ai-poc-onboarding
       apigee_env: dev
-      deploy_proxy: audit-api
+      deploy_proxy: forgenotifier-event-driven-notification-alerting-service
       resourcetype: apis
       branch_name: ${{ github.ref_name }}
