@@ -19,9 +19,7 @@
     To rotate keys update the KVM — no proxy redeploy needed.
   -->
   <PublicKey>
-    <JWKS>
       <Value ref="private.jwt_public_key"/>
-    </JWKS>
   </PublicKey>
   
   <ExpiresIn>3600</ExpiresIn>
