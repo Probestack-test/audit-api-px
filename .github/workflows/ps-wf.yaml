@@ -17,7 +17,6 @@ jobs:
       id-token: write
 
     secrets:
-      cicd_config_id: ${{ secrets.CICD_CONFIG_ID }}
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
