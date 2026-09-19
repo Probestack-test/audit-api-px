@@ -10,7 +10,7 @@ on:
 
 jobs:
   apigee-ci:
-    uses: ForgeCrux/pipeline-template/.github/workflows/apigee-v2.yaml@main
+    uses: ForgeCrux/pipeline-template/.github/workflows/apigee-v1.yaml@main
     permissions:
       contents: read
       id-token: write
