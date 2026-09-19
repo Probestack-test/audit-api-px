@@ -25,6 +25,7 @@ jobs:
       PROB_SERVICE_TOKEN_CLIENT_ID: ${{ secrets.PROB_SERVICE_TOKEN_CLIENT_ID }}
       PROB_SERVICE_TOKEN_CLIENT_SECRET: ${{ secrets.PROB_SERVICE_TOKEN_CLIENT_SECRET }}
       PROB_SERVICE_TOKEN_TENANT_ID: ${{ secrets.TENANT_ID }}
+      cicd_profile_id: ${{ secrets.CICD_PROFILE_ID }}
 
     with:
       apigee_org: gen-ai-poc-onboarding
